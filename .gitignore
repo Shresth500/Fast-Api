@@ -1,0 +1,10 @@
+# Ignore all .env files anywhere in the project
+**/.env
+
+# Ignore Python virtual environments
+venv/
+.venv/
+
+# Ignore all Python bytecode cache directories globally
+__pycache__/
+*.pyc
