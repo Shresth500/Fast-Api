@@ -1,32 +1,23 @@
-from client.rq_client import queue
-from fastapi import FastAPI, Query
-from dotenv import load_dotenv
-from queues.worker import process_query
+from fastapi import FastAPI
+from DbConnections import create_db_and_tables
+from routes.chat_routes import router as chat_router
+from routes.auth_routes import router as auth_router
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI): 
+    create_db_and_tables()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 
-load_dotenv()
-
-app = FastAPI()
-
-@app.get('/')
+@app.get("/")
 def root():
-    return {"status":"Server is up and running"}
+    
+    return {
+        "status": "Server is up and running"
+    }
 
-
-@app.post('/chat')
-def chat(
-        query:str = Query(..., description="The chat query of user")
-):
-    job = queue.enqueue(process_query, query)
-    print(queue)
-    return {"status":"queued","job_id":job.id}
-
-
-@app.get('/job-status')
-def get_result(
-    job_id:str = Query(...,description="Job Id")
-):
-    job = queue.fetch_job(job_id=job_id)
-    print(queue)
-    result = job.return_value()
-    return {"result":result}
+app.include_router(chat_router)
+app.include_router(auth_router)

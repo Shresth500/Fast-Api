@@ -13,10 +13,13 @@ embedding_model = OllamaEmbeddings(
     model="nomic-embed-text"
 )
 
+_rag_initialized = False
 
 def process_query(query: str):
-
-    RAG_Creation()
+    global _rag_initialized
+    if not _rag_initialized:
+        RAG_Creation()
+        _rag_initialized = True
 
     print("Searching chunks...")
 
