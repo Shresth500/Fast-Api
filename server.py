@@ -3,6 +3,7 @@ from DbConnections import create_db_and_tables
 from routes.chat_routes import router as chat_router
 from routes.auth_routes import router as auth_router
 from contextlib import asynccontextmanager
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 @asynccontextmanager
 async def lifespan(app: FastAPI): 
@@ -10,6 +11,10 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    TrustedHostMiddleware, allowed_hosts=["*"]  
+)
 
 
 @app.get("/")
