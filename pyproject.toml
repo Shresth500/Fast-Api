@@ -12,6 +12,7 @@ dependencies = [
     "langchain-ollama>=1.1.0",
     "langchain-qdrant>=1.1.0",
     "langchain-text-splitters>=1.1.2",
+    "mem0ai==2.0.4",
     "ollama>=0.6.2",
     "pwdlib[argon2]>=0.3.0",
     "pydantic[email]>=2.13.4",
