@@ -49,6 +49,7 @@ def chat_app(user_query:str, user_id:int, chat_window_id:int):
         You are an helpful assistant 
         Previous context: 
         {memory_context}
+        User: {user_query}
     """
     logger.info(f"Loading the response from the LLM")
     response = llm.invoke(prompt)
