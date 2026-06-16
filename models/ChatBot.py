@@ -4,4 +4,4 @@ from typing import Any
 
 class ChatBotResponse(SQLModel):
     status:str
-    resposne:Any
+    resposne:str

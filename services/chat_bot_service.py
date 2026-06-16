@@ -46,7 +46,7 @@ def chat_app(user_query:str, user_id:int, chat_window_id:int):
     logger.info(f"Previous Messages close to the User-query:{memories}")
     memory_context = "\n\n".join(memory["memory"] for memory in memories.get("results", []))
     prompt = f"""
-        You are an helpful assistant 
+        You are a helpful assistant 
         Previous context: 
         {memory_context}
         User: {user_query}
