@@ -1,12 +1,12 @@
 from datetime import timedelta
+from http.client import HTTPException
 
 from sqlmodel import Session, select
 from pwdlib import PasswordHash
 from models.User import LoginRequest, LoginResponse, TokenResponse, User, UserListResponse, UserRequest, UserResponse
-from dotenv import load_dotenv
 import os
 
-from services.access_token_service import create_access_token
+from services.jwt_service import create_access_token
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
@@ -65,31 +65,44 @@ def get_users(session: Session):
 
 
 def login_user(user: LoginRequest, session: Session):
-    """
-    Authenticates a user based on the provided login credentials.
-
-    Args:
-        user (LoginRequest): A Pydantic model containing the user's email and password.
-    """
     statement = select(User).where(User.email == user.email)
     existing_user = session.exec(statement).first()
+
     if not existing_user:
-        return {"status": "error", "message": "User does not exist."}
+        raise HTTPException(status_code=404, detail="User does not exist.")   # ✅ use HTTPException
+
     if not verify_password(user.password, existing_user.password):
-        return {"status": "error", "message": "Incorrect password."}
-    # Here you would typically generate a JWT token or similar for the authenticated user
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        raise HTTPException(status_code=401, detail="Incorrect password.")    # ✅ use HTTPException
+
     access_token = create_access_token(
-        data={"sub": existing_user.id, "name": existing_user.name, "email": existing_user.email}, expires_delta=access_token_expires
+        data={
+            "sub": str(existing_user.id),
+            "name": existing_user.name,
+            "email": existing_user.email
+        },
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
+
     return {
-        "status": "success",
-        "response": LoginResponse(
-            id=existing_user.id,
-            name=existing_user.name,
-            email=existing_user.email,
-            token=TokenResponse(
-                access_token=access_token
-            )
-        )
+        "access_token": access_token,   # ✅ top level
+        "token_type": "bearer",         # ✅ required by OAuth2 spec
+        "user": {
+            "id": existing_user.id,
+            "name": existing_user.name,
+            "email": existing_user.email
+        }
     }
+def get_user_by_id(user_id: int, session: Session):
+    """
+    Retrieves a user from the database based on their ID.
+
+    Args:
+        user_id (int): The ID of the user to retrieve.
+    Returns:
+        UserResponse: A Pydantic model containing the user's information, or None if the user does not exist.
+    """
+    statement = select(User).where(User.id == user_id)
+    user = session.exec(statement).first()
+    if user:
+        return UserResponse(id=user.id, name=user.name, email=user.email)
+    return None

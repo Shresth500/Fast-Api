@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Query
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from fastapi.params import Depends
 
@@ -27,8 +28,12 @@ def users(session: Session = Depends(get_session)):
     return response
 
 @router.post("/login")
-def login(user: LoginRequest, session: Session = Depends(get_session)):
+def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
     # Implement user login logic here
+    user = LoginRequest(
+        email=form_data.username,
+        password=form_data.password
+    )
     response = login_user(user, session)
     return response
     

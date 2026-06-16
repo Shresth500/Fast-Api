@@ -1,7 +1,9 @@
-from typing import List, Optional
-from sqlmodel import SQLModel, Field
+from typing import TYPE_CHECKING, List, Optional
+from sqlmodel import Relationship, SQLModel, Field
 from pydantic import EmailStr, field_validator, model_validator
 import re
+if TYPE_CHECKING:
+    from models.ChatWindow import ChatWindow
 
 
 # Input schema with validation
@@ -44,6 +46,7 @@ class User(SQLModel, table=True):
     name: str
     email: str
     password: str  # stores hashed password only
+    chat_windows: List["ChatWindow"] = Relationship(back_populates="user")
 
 class UserResponse(SQLModel):
     id: int
