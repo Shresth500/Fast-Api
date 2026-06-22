@@ -3,6 +3,7 @@ from sqlmodel import Session
 from fastapi.params import Depends
 
 from DbConnections import get_session
+from models.ChatBot import ChatBotRequest
 from models.ChatWindow import ChatWindowCreateRequest, ChatWindowListResponse
 from services.access_token_service import get_current_user
 from services.chat_bot_service import chat_app
@@ -35,7 +36,8 @@ def get_chat_window(chat_window_id: int, session: Session = Depends(get_session)
 
 @router.post("/chat-windows/{chat_window_id}")
 def post_chat_question(chat_window_id:int, 
-                       user_query:str,
+                       user_input:ChatBotRequest,
                        session:Session = Depends(get_session),
                        current_user = Depends(get_current_user)):
-    response = chat_app(user_query=user_query,user_id=current_user.id,chat_window_id=chat_window_id)
+    response = chat_app(user_query=user_input.user_query,user_id=current_user.id,chat_window_id=chat_window_id)
+    return response
