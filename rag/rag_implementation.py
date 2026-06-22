@@ -49,7 +49,7 @@ class RAGImplementation:
             documents=chunks,
             embedding=embedding_model,
             url="http://localhost:6333",
-            collection_name="learning_rag"
+            collection_name=document_name.lower().replace(" ", "_")
         )
 
         print("Indexing completed!")
