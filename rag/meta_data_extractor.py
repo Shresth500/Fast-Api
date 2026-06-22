@@ -432,8 +432,9 @@ def extract_meta_data(document_text: str):
         text_or_documents=document_text,
         prompt_description=PROMPT,
         examples=EXAMPLES,
-        model_id="llama3",  # Automatically selects Ollama provider
-        model_url="http://localhost:11434",
+        model_id="gemini-2.5-flash",
+        # model_id="llama3",  # Automatically selects Ollama provider
+        # model_url="http://localhost:11434",
         extraction_passes=1,     # better recall for longer docs
         max_workers=1,
         # timeout=600

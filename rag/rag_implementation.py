@@ -15,9 +15,15 @@ load_dotenv()
 class RAGImplementation:
     @staticmethod
     def RAG_Creation(document_name:str):
-        # client = QdrantClient(url="http://localhost:6333")
-        # client.delete_collection("learning_rag")
-        # client.delete_collection("rag_collection")
+
+        collection_name = document_name.lower().replace(" ", "_")
+        client = QdrantClient(url="http://localhost:6333")
+
+        # Skip indexing if collection already exists
+        existing = [c.name for c in client.get_collections().collections]
+        if collection_name in existing:
+            print(f"Collection '{collection_name}' already exists. Skipping indexing.")
+            return
         
         
         pdf_path = Path(__file__).parent / f"{document_name}.pdf"
