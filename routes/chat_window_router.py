@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Query
+from typing import Annotated
+
+from fastapi import APIRouter, Form, Query
 from sqlmodel import Session
 from fastapi.params import Depends
 
@@ -53,3 +55,9 @@ def post_chat_question(chat_window_id:int,
         status="success",
         resposne=response.content
     )
+
+
+@router.post("/chat-window/post-data")
+async def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+    
+    return {"username": username}

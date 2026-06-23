@@ -2,7 +2,7 @@ import logging
 
 from langchain_ollama import ChatOllama
 from mem0 import Memory
-from config import config
+from agents.config import config
 
 
 

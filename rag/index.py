@@ -1,5 +1,5 @@
-from java_rag import JavaRAG
-from python_rag import PythonRAG
+from rag.java_rag import JavaRAG
+from rag.python_rag import PythonRAG
 
 
 if __name__ == '__main__':

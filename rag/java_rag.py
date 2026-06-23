@@ -1,6 +1,6 @@
-from rag import RAG
+from rag.rag import RAG
 from dotenv import load_dotenv
-from rag_implementation import RAGImplementation
+from rag.rag_implementation import RAGImplementation
 
 import os
 

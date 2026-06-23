@@ -1,8 +1,8 @@
 import logging
 import os
-from agent import Agent
-from BaseAgent import BaseAgent
-from load_vector_embedding import load_vector_store
+from agents.agent import Agent
+from agents.BaseAgent import BaseAgent
+from agents.load_vector_embedding import load_vector_store
 
 class BaseProgrammingAgent(Agent):
     logger = logging.getLogger(__name__)

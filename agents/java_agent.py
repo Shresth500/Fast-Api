@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from BaseProgrammingAgent import BaseProgrammingAgent
+from agents.BaseProgrammingAgent import BaseProgrammingAgent
 
 
 load_dotenv()

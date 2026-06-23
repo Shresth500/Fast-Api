@@ -3,8 +3,8 @@ import logging
 
 from langchain_ollama import ChatOllama
 from mem0 import Memory
-from config import config
-from Domain import VALID_DOMAIN
+from agents.config import config
+from agents.Domain import VALID_DOMAIN
 
 
 class DecisionAgent:

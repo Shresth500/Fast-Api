@@ -5,7 +5,7 @@ from langchain_qdrant import QdrantVectorStore
 from dotenv import load_dotenv
 import os
 
-from rag.index import RAG_Creation
+from rag.rag_implementation import RAGImplementation
 
 load_dotenv()
 
@@ -18,7 +18,7 @@ _rag_initialized = False
 def process_query(query: str):
     global _rag_initialized
     if not _rag_initialized:
-        RAG_Creation()
+        RAGImplementation.RAG_Creation()
         _rag_initialized = True
 
     print("Searching chunks...")

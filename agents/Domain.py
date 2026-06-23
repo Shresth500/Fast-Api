@@ -1,5 +1,5 @@
-from java_agent import JavaAgent
-from python_agent import PythonAgent
+from agents.java_agent import JavaAgent
+from agents.python_agent import PythonAgent
 
 
 VALID_DOMAIN = {

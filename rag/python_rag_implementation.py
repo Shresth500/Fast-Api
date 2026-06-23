@@ -9,7 +9,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 
-from meta_data_extractor import extract_meta_data, tag_chunks_with_entities
+from rag.meta_data_extractor import extract_meta_data, tag_chunks_with_entities
 load_dotenv()
 
 
