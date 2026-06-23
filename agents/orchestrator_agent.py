@@ -13,7 +13,8 @@ class OrchestratorAgent(Agent):
             response = decision_agent.agent_output(user_query=user_query, user_id=user_id, chat_window_id=chat_window_id)
             domain = response.get("domain")
             programming_agent = DOMAIN_AGENT[domain]()
-            print(programming_agent.agent_output(user_query, user_id, chat_window_id))
+            response=programming_agent.agent_output(user_query, user_id, chat_window_id)
+            return response
                     
         except Exception as e:
             self.logger.error(f"Error: {e}")

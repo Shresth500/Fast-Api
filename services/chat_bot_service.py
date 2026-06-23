@@ -15,7 +15,7 @@ config = {
     "llm": {
         "provider": "ollama",
         "config": {
-            "model": "llama3.1:latest",
+            "model": "llama3:latest",
             "temperature": 0,
             "max_tokens": 2000,
             "ollama_base_url": "http://localhost:11434",  # Ensure this URL is correct

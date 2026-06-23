@@ -9,8 +9,8 @@ if __name__ == '__main__':
         user_query = input("Enter your query: ")
         if user_query.lower() == "exit":
             break
-        workflow.agent_output(
+        print(workflow.agent_output(
             user_query=user_query,
             user_id=user_id,
             chat_window_id=chat_window_id
-        )
+        ))
