@@ -2,7 +2,6 @@ import logging
 
 from langchain_ollama import ChatOllama
 from mem0 import Memory
-
 from config import config
 
 
@@ -23,7 +22,8 @@ class BaseAgent:
             },
             limit=5
         )
-
+        self.logger.info(f"Previous content: {memories}")
+        print(memories)
         memory_context = "\n\n".join(
             memory["memory"] for memory in memories.get("results", [])
         )
@@ -52,7 +52,7 @@ class BaseAgent:
         response = self.llm.invoke(prompt)
 
         self.logger.info("Storing conversation in mem0")
-        self.memory_client.add(
+        result = self.memory_client.add(
             messages=[
                 {"role": "user", "content": user_query},
                 {"role": "assistant", "content": response.content}
@@ -60,5 +60,6 @@ class BaseAgent:
             user_id=str(user_id),
             run_id=str(chat_window_id)
         )
-
+        self.logger.info(f"Added: {result}")
+        print(result)
         return response.content 
