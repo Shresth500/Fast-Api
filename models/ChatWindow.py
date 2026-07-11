@@ -29,3 +29,5 @@ class ChatWindowResponse(SQLModel):
 class ChatWindowListResponse(SQLModel):
     chat_windows: List[ChatWindowResponse]
     status: str
+    page_number: Optional[int] = Field(default=1)
+    page_size: Optional[int] = Field(default=10)
