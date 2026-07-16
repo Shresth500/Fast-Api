@@ -12,7 +12,7 @@ class LoadRAG:
     def load_rag():
         rag_collection=[
             PythonRAG(),
-            JavaRAG()
+            # JavaRAG()
         ]
         for rag in rag_collection:
             rag.set_rag()

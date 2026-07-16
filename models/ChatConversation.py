@@ -1,7 +1,10 @@
 from datetime import datetime
 from typing import List, Optional
+from alembic.environment import TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
-from models import ChatWindow
+
+if TYPE_CHECKING:
+    from models.ChatWindow import ChatWindow
 
 
 class ChatConversation(SQLModel, table=True):
