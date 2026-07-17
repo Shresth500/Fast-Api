@@ -4,9 +4,10 @@ from sqlmodel import Field, Relationship, SQLModel
 
 class ChatConversationDTO(SQLModel):
     id: Optional[int] = Field(default=None, primary_key=True) # Changed default to None for auto-increment
-    message: str
+    user_message: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
-    chat_window_id: int = Field(foreign_key="chatwindow.id")
+    bot_response: str
+    chat_window_id: int
 
 class ChatConversationResponseDTO(SQLModel):
     chat_list:List[ChatConversationDTO]
