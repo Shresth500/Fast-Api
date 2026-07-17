@@ -48,6 +48,8 @@ class UserResponseDTO(SQLModel):
 class UserListResponseDTO(SQLModel):
     status: str
     users: List[UserResponseDTO]
+    page: Optional[int] = None
+    page_size: Optional[int] = None
 
 class TokenResponseDTO(SQLModel):
     access_token: str

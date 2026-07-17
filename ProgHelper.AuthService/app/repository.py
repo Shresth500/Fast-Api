@@ -17,8 +17,8 @@ class UserRepository:
         self.session.refresh(user)
         return user
 
-    def get_all(self):
-        return self.session.exec(select(User)).all()
+    def get_all(self, page: int, page_size: int):
+        return self.session.exec(select(User).offset((page - 1) * page_size).limit(page_size)).all()
     
     def get_by_id(self, user_id: int):
         return self.session.exec(

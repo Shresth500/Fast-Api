@@ -6,6 +6,7 @@ from schemas import UserRequestDTO, UserResponseDTO, UserListResponseDTO, TokenR
 from database import get_session 
 from service import AuthService
 from repository import UserRepository
+from core.security import verify_jwt
 
 
 router = APIRouter(
@@ -24,11 +25,14 @@ async def register(user:UserRequestDTO, session: Session = Depends(get_session))
     return response
 
 @router.get("/users", response_model=UserListResponseDTO)
-def users(session: Session = Depends(get_session)):
+async def users(session: Session = Depends(get_session),
+                page: int = Query(1, ge=1),
+                page_size: int = Query(10, ge=1, le=100)):
     # Implement user retrieval logic here
     repo = UserRepository(session)
     auth_service = AuthService(repo)
-    response = auth_service.get_users(session)
+    response = await auth_service.get_users(session, page, page_size)
+    print("Users response:", response)
     return response
 
 @router.post("/login")
@@ -40,8 +44,8 @@ async def login(
     response = await auth_service.login_user(user)
     return response
     
-@router.get("/me", response_model=UserResponseDTO)
-def get_current_user(session: Session = Depends(get_session)):
-    repo = UserRepository(session)
-    auth_service = AuthService(repo)
+@router.get("/me")
+def get_current_user(session: Session = Depends(get_session), user = Depends(verify_jwt)):
+    print("Current user:", user)
+    return UserResponseDTO(**user)  # Return the user object, which contains the user info
     

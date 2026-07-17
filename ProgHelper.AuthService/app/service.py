@@ -66,11 +66,13 @@ class AuthService:
             }
         }
 
-    async def get_users(self, session: Session):
-        users = self.repo.get_all()
+    async def get_users(self, session: Session, page: int, page_size: int):
+        users = self.repo.get_all(page, page_size)
         return UserListResponseDTO(
             status="success",
-            users=[UserResponseDTO(id=user.id, name=user.name, email=user.email) for user in users]
+            users=[UserResponseDTO(id=user.id, name=user.name, email=user.email) for user in users],
+            page=page,
+            page_size=page_size
         )
     
     async def get_user_by_id(self, user_id: int, session: Session):
