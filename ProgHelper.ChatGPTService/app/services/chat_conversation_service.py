@@ -28,11 +28,14 @@ class ChatConversationService:
             chat_window_id=chat_window_id,
         )
 
+        print(f"Bot response: {bot_response}")
+
         conversation = self.repository.create_conversation(
             user_message=user_message,
             bot_response=bot_response,
             chat_window_id=chat_window_id,
         )
+        print(f"Conversation saved: {conversation}")
         return conversation
     
     async def get_chat_history(self, chat_window_id: int, page_size: int = 10, page_number: int = 1):

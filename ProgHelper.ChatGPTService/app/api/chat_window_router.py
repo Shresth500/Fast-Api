@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, File, Form, Query, UploadFile
 from sqlmodel import Session
 from fastapi.params import Depends
-from models.ChatConversation import ChatConversationDTO, ChatConversationResponseDTO
+from schemas.ChatConversationDTO import ChatConversationDTO, ChatConversationResponseDTO
 from schemas.ChatWindowDTO import ChatWindowCreateRequestDTO, ChatWindowListResponseDTO, ChatWindowResponseDTO
 from database import get_session
 from core.security import verify_jwt
@@ -64,6 +64,7 @@ async def post_chat_question(chat_window_id:int,
                        session:Session = Depends(get_session),
                        current_user = Depends(verify_jwt),
                        ):
+    print("Received user query:", user_query)
     service = ChatConversationService(session)
     conversation = await service.handle_user_message(
         user_message=user_query,
@@ -77,4 +78,5 @@ async def post_chat_question(chat_window_id:int,
         chat_window_id=conversation.chat_window_id,
         timestamp=conversation.timestamp
     )
+    print("Response to be returned:", response)
     return response

@@ -74,7 +74,7 @@ class DecisionAgent:
             cls._instance = super().__new__(cls)
             # These run only ONCE — on first instantiation
             cls._instance.llm = ChatOllama(
-                model="llama3.2:3b",
+                model="llama3",
                 temperature=0,
                 num_predict=50      # caps output — routing only needs one JSON line
             )

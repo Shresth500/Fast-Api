@@ -1,6 +1,7 @@
 from sqlmodel import Session, select
 from sqlmodel import Session
-from models.ChatConversation import ChatConversation, ChatConversationDTO, ChatConversationResponseDTO
+from models.ChatConversation import ChatConversation
+from schemas.ChatConversationDTO import ChatConversationDTO, ChatConversationResponseDTO
 
 
 class ChatConversationRepository:
