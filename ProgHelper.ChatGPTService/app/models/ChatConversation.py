@@ -9,8 +9,10 @@ if TYPE_CHECKING:
 class ChatConversation(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True) # Changed default to None for auto-increment
     user_message: str
+    file_path: Optional[str] = None
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     bot_response: str
+    bot_response_file_path: Optional[str] = None
     # Foreign Key
     chat_window_id: int = Field(foreign_key="chatwindow.id")
     # Relationships
