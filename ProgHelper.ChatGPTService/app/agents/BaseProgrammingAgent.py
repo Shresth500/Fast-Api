@@ -12,10 +12,11 @@ class BaseProgrammingAgent(Agent):
         self.document_name = os.getenv(document_env_key)
         self.vector_db = load_vector_store(self.document_name)
 
-    def agent_output(self, user_query: str, user_id: int, chat_window_id: int):
+    def agent_output(self, user_query: str, user_id: int, chat_window_id: int, memory_context: str):
         return self.base_agent.output(
             user_query=user_query,
             user_id=user_id,
             chat_window_id=chat_window_id,
-            vector_db=self.vector_db
+            vector_db=self.vector_db,
+            memory_context=memory_context   
         )

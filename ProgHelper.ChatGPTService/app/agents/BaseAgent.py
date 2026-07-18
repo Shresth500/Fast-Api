@@ -1,32 +1,28 @@
 import logging
 
-from langchain_ollama import ChatOllama
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
 from mem0 import Memory
 from agents.config import config
 
 
-
 class BaseAgent:
     logger = logging.getLogger(__name__)
+
     def __init__(self):
         self.memory_client = Memory.from_config(config)
-        self.llm = ChatOllama(model="llama3", temperature=0.1)
-    def output(self,user_query:str,user_id:int,
-               chat_window_id:int,vector_db):
+        self.llm_model = init_chat_model(
+            model="llama3",
+            model_provider="ollama",
+            temperature=0.1,
+            max_tokens=512,  # single kwarg for output length — don't also pass num_predict
+        )
+
+    def output(self, user_query: str, user_id: int, chat_window_id: int, vector_db,memory_context:str):
         self.logger.info("Fetching memories from mem0")
-        memories = self.memory_client.search(
-            query=user_query,
-            filters={
-                "user_id": str(user_id),
-                "run_id": str(chat_window_id)
-            },
-            limit=5
-        )
-        self.logger.info(f"Previous content: {memories}")
-        print(memories)
-        memory_context = "\n\n".join(
-            memory["memory"] for memory in memories.get("results", [])
-        )
+        print(f"llm object: {self.memory_client.llm}")
+        print(f"llm type: {type(self.memory_client.llm)}")
+        print("has generate_response:", hasattr(self.memory_client.llm, "generate_response"))
 
         search_results = vector_db.similarity_search(query=user_query)
         context = "\n\n".join(
@@ -49,17 +45,31 @@ class BaseAgent:
         """
 
         self.logger.info("Fetching response from LLM")
-        response = self.llm.invoke(prompt)
+        agent = create_agent(
+            model=self.llm_model,
+            tools=[],
+            system_prompt=prompt,
+        )
 
+        response = agent.invoke(
+            {"messages": [{"role": "user", "content": user_query}]}
+        )
+
+        # Same extraction fix as DecisionAgent — invoke() returns a dict,
+        # not an object with .content.
+        output_text = response["messages"][-1].content_blocks
+        print(f"Raw response from LLM: {response}")
+        print(f"Raw response content: {output_text}")
+        print(f"Output text: {output_text[0]['text']}")
         self.logger.info("Storing conversation in mem0")
         result = self.memory_client.add(
             messages=[
                 {"role": "user", "content": user_query},
-                {"role": "assistant", "content": response.content}
+                {"role": "assistant", "content": output_text[0]['text']},
             ],
             user_id=str(user_id),
-            run_id=str(chat_window_id)
+            run_id=str(chat_window_id),
         )
         self.logger.info(f"Added: {result}")
-        print(result)
-        return response.content 
+
+        return output_text[0]['text']  # Return the text of the last message
