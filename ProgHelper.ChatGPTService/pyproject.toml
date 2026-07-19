@@ -1,0 +1,27 @@
+[project]
+name = "proghelper-chatgptservice"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.5",
+    "fastapi>=0.139.2",
+    "langchain>=1.3.14",
+    "langchain-community>=0.4.2",
+    "langchain-google-genai>=4.2.7",
+    "langchain-ollama>=1.1.0",
+    "langchain-qdrant>=1.1.0",
+    "langextract>=1.6.0",
+    "mem0ai>=2.0.12",
+    "passlib[bcrypt]>=1.7.4",
+    "pyjwt>=2.13.0",
+    "pypdf>=6.14.2",
+    "python-dotenv>=1.2.2",
+    "python-jose[cryptography]>=3.5.0",
+    "python-multipart>=0.0.32",
+    "qdrant-client>=1.18.0",
+    "redis>=8.0.1",
+    "rq>=2.10.0",
+    "sqlmodel>=0.0.39",
+    "uvicorn[standard]>=0.51.0",
+]

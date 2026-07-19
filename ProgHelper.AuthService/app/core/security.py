@@ -1,12 +1,9 @@
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import HTTPException, status
-from typing import Annotated
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi import HTTPException
 from fastapi.params import Depends
 from sqlmodel import Session
-from dotenv import load_dotenv
 from database import get_session
 from repository import UserRepository
 # from service import AuthService
