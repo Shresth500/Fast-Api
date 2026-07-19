@@ -9,4 +9,13 @@ venv/
 __pycache__/
 *.pyc
 
-database.db
+# Ignore local SQLite databases
+**/*.db
+
+# Ignore log files
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store

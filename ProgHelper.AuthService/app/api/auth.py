@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Query
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from fastapi.params import Depends
 from schemas import UserRequestDTO, UserResponseDTO, UserListResponseDTO, TokenResponseDTO, LoginResponseDTO, LoginRequestDTO
