@@ -39,3 +39,19 @@ def verify_jwt(credentials: HTTPAuthorizationCredentials = Depends(security),
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
+
+
+import json
+from fastapi import Header, HTTPException
+
+def get_gateway_user(x_authenticated_user: str = Header(...)) -> dict:
+    try:
+        user = json.loads(x_authenticated_user)
+    except (json.JSONDecodeError, TypeError):
+        raise HTTPException(status_code=400, detail="Invalid x-authenticated-user header")
+
+    # optional but recommended: validate shape
+    if not isinstance(user, dict) or "id" not in user:
+        raise HTTPException(status_code=400, detail="Malformed authenticated-user payload")
+
+    return user
